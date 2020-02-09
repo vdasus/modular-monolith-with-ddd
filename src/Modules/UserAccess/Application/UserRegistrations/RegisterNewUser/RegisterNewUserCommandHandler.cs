@@ -1,13 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CompanyName.MyMeetings.Modules.UserAccess.Application.Authentication;
-using CompanyName.MyMeetings.Modules.UserAccess.Application.Configuration.Processing;
+using CompanyName.MyMeetings.Modules.UserAccess.Application.Configuration.Commands;
 using CompanyName.MyMeetings.Modules.UserAccess.Domain.UserRegistrations;
 using MediatR;
 
 namespace CompanyName.MyMeetings.Modules.UserAccess.Application.UserRegistrations.RegisterNewUser
 {
-    public class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCommand>
+    internal class RegisterNewUserCommandHandler : ICommandHandler<RegisterNewUserCommand>
     {
         private readonly IUserRegistrationRepository _userRegistrationRepository;
         private readonly IUsersCounter _usersCounter;

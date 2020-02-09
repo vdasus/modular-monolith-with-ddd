@@ -50,6 +50,10 @@ Full Modular Monolith .NET application with Domain-Driven Design approach.
 
 &nbsp;&nbsp;[3.10 Unit Tests](#310-unit-tests)
 
+&nbsp;&nbsp;[3.11 Architecture Decision Log](#311-architecture-decision-log)
+
+&nbsp;&nbsp;[3.12 Architecture Unit Tests](#312-architecture-unit-tests)
+
 [4. Technology](#4-technology)
 
 [5. How to Run](#5-how-to-run)
@@ -256,11 +260,11 @@ Note: Event Storming is a light, live workshop. One of the possible outputs of t
 
 ![](docs/Images/Module_level_diagram.png)
 
-Each Module consists of the following submodules (assemblies):
+Each Module has [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and consists of the following submodules (assemblies):
 
-- **Application** - the main submodule which is responsible for initialization, processing all requests, internal commands and integration events
+- **Application** - the application logic submodule which is responsible for requests processing: use cases, domain events, integration events, internal commands.
 - **Domain** - Domain Model in Domain-Driven Design terms implements the applicable [Bounded Context](https://martinfowler.com/bliki/BoundedContext.html)
-- **Infrastructure** - infrastructural code like Entity Framework configuration and mappings
+- **Infrastructure** - infrastructural code responsible for module initialization, background processing, data access, communication with Events Bus and other external components or systems
 - **IntegrationEvents** - **Contracts** published to the Events Bus; only this assembly can be called by other modules
 
 ![](docs/Images/VSSolution.png)
@@ -933,6 +937,25 @@ protected MeetingTestData CreateMeetingTestData(MeetingTestDataOptions options)
 }
 ```
 
+### 3.11 Architecture Decision Log
+
+All Architectural Decisions (AD) are documented in the [Architecture Decision Log (ADL)](docs/architecture-decision-log).
+
+More information about documenting architecture-related decisions in this way : [https://github.com/joelparkerhenderson/architecture_decision_record](https://github.com/joelparkerhenderson/architecture_decision_record)
+
+### 3.12 Architecture Unit Tests
+
+In some cases it is not possible to enforce the application architecture, design or established conventions using compiler (compile-time). For this reason, code implementations can diverge from the original design and architecture. We want to minimize this behavior, not only by code review.</br>
+
+To do this, unit tests of system architecture, design, major conventions and assumptions  have been written. In .NET there is special library for this task: [NetArchTest](https://github.com/BenMorris/NetArchTest). This library has been written based on the very popular JAVA architecture unit tests library - [ArchUnit](https://www.archunit.org/).</br>
+
+Using this kind of tests we can test proper layering of our application, dependencies, encapsulation, immutability, DDD correct implementation, naming, conventions and so on - everything what we need to test. Example:</br>
+
+![](docs/Images/architecture_unit_tests.png)
+
+More information about architecture unit tests here: [https://blogs.oracle.com/javamagazine/unit-test-your-architecture-with-archunit](https://blogs.oracle.com/javamagazine/unit-test-your-architecture-with-archunit)
+
+
 ## 4. Technology
 
 List of technologies, frameworks and libraries used for implementation:
@@ -954,12 +977,14 @@ List of technologies, frameworks and libraries used for implementation:
 - [NUnit](https://nunit.org/) (Testing framework)
 - [NSubstitute](https://nsubstitute.github.io/) (Testing isolation framework)
 - [Visual Paradigm Community Edition](https://www.visual-paradigm.com/download/community.jsp) (CASE tool for modeling and documentation)
+- [NetArchTest](https://github.com/BenMorris/NetArchTest) (Architecture Unit Tests library)
 
 ## 5. How to Run
 
 - Download and install .NET Core 2.2 SDK
 - Download and install MS SQL Server Express or other
 - Create an empty database and run [InitializeDatabase.sql](src/Database/InitializeDatabase.sql) script
+  
   - 2 test users will be created - check the script for usernames and passwords
 - Set a database connection string called `MeetingsConnectionString` in the root of the API project's appsettings.json or use [Secrets](https://blogs.msdn.microsoft.com/mihansen/2017/09/10/managing-secrets-in-net-core-2-0-apps/)
 
@@ -1008,6 +1033,7 @@ List of features/tasks/approaches to add:
 | Name                     | Priority | Status | Release date |
 | ------------------------ | -------- | -------- | -------- |
 | Domain Model Unit Tests | High     | Completed | 2019-09-10 |
+| Architecture Decision Log update | High     | Completed | 2019-11-09 |
 | API automated tests      | Normal   |    |    |
 | FrontEnd SPA application | Normal   |    |    |
 | Meeting comments feature | Low   |    |    |
@@ -1093,6 +1119,7 @@ The project is under [MIT license](https://opensource.org/licenses/MIT).
 
 ### Testing
 - ["The Art of Unit Testing: with examples in C#"](https://www.amazon.com/Art-Unit-Testing-examples/dp/1617290890) book, Roy Osherove
+- ["Unit Test Your Architecture with ArchUnit"](https://blogs.oracle.com/javamagazine/unit-test-your-architecture-with-archunit) article, Jonas Havers
 
 ### UML
 - ["UML Distilled: A Brief Guide to the Standard Object Modeling Language (3rd Edition)"](https://www.amazon.com/UML-Distilled-Standard-Modeling-Language/dp/0321193687) book, Martin Fowler

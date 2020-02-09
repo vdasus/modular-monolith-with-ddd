@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using CompanyName.MyMeetings.Modules.Administration.Application.Configuration.Processing;
+using CompanyName.MyMeetings.Modules.Administration.Application.Configuration;
+using CompanyName.MyMeetings.Modules.Administration.Application.Configuration.Commands;
 using CompanyName.MyMeetings.Modules.Administration.Domain.MeetingGroupProposals;
 using CompanyName.MyMeetings.Modules.Administration.Domain.Users;
 using MediatR;
@@ -23,7 +24,7 @@ namespace CompanyName.MyMeetings.Modules.Administration.Application.MeetingGroup
                 request.MeetingGroupProposalId,
                 request.Name,
                 request.Description,
-                new MeetingGroupLocation(request.LocationCity, request.LocationCountryCode),
+                MeetingGroupLocation.Create(request.LocationCity, request.LocationCountryCode),
                 new UserId(request.ProposalUserId),
                 request.ProposalDate
             );
